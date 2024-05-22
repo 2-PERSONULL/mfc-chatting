@@ -9,5 +9,5 @@ public class ChatReqDto {
 	private String msg;
 	private String sender;
 	// private String receiver;
-	private String roomId;
+	private Long roomId;
 }

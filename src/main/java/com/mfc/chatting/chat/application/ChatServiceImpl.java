@@ -23,7 +23,7 @@ public class ChatServiceImpl implements ChatService{
 	}
 
 	@Override
-	public Flux<Message> getChatByRoomId(String roomId) {
+	public Flux<Message> getChatByRoomId(Long roomId) {
 		return chatRepository.findChatByRoomId(roomId);
 	}
 

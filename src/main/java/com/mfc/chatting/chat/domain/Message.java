@@ -13,14 +13,14 @@ import lombok.Getter;
 public class Message {
 	@Id
 	private String id;
-	private String roomId;
+	private Long roomId;
 	private String msg;
 	private String sender;
 	// private String receiver;		// 카카오톡 답글, 멘션 같은 부분에 사용될 수 있음
 	private LocalDateTime createdAt;
 
 	@Builder
-	public Message(String msg, String sender, String roomId) {
+	public Message(String msg, String sender, Long roomId) {
 		this.msg = msg;
 		this.sender = sender;
 		// this.receiver = receiver;

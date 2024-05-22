@@ -41,7 +41,7 @@ public class ChatController {
 
 	@GetMapping(value = "/room/{roomId}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
 	public Flux<Message> getChatByRoomId(
-		@PathVariable(value ="roomId") String roomId
+		@PathVariable(value ="roomId") Long roomId
 	){
 		return chatService.getChatByRoomId(roomId).subscribeOn(Schedulers.boundedElastic());
 	}

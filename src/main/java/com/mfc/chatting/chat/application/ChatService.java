@@ -9,7 +9,7 @@ import reactor.core.publisher.Mono;
 public interface ChatService {
 	Flux<Message> getChat(String sender, String receiver);
 
-	Flux<Message> getChatByRoomId(String roomId);
+	Flux<Message> getChatByRoomId(Long roomId);
 
 	Mono<Message> sendChat(ChatReqDto dto);
 }
