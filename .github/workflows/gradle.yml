@@ -58,7 +58,6 @@ jobs:
         distribution: 'temurin'
 
 
-
     ## deploy to production
     - name: Deploy to prod
       uses: appleboy/ssh-action@master
@@ -70,7 +69,7 @@ jobs:
         envs: GITHUB_SHA
         script: |
           sudo docker stop mfc-chatting
-          sudo docker rm mfc-chatiing
+          sudo docker rm mfc-chatting
           sudo docker pull ${{ secrets.DOCKER_USERNAME }}/chatting
           sudo docker run -d --name mfc-chatting --network mfc -P ${{ secrets.DOCKER_USERNAME }}/chatting
           sudo docker image prune -f
