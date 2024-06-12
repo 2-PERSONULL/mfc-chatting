@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,16 +30,6 @@ public class ChatController {
 	private final ChatService chatService;
 	private final ModelMapper modelMapper;
 
-	// receiver 없앰 -> 안쓰는 API ( 이거는 귓속말에 사용가능함 )
-	// @GetMapping(value="/sender/{sender}/receiver/{receiver}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-	// public Flux<Message> getChat(
-	// 	@PathVariable(value ="sender") String sender,
-	// 	@PathVariable(value ="receiver") String receiver
-	// ){
-	// 	return chatService.getChat(sender, receiver)
-	// 		.subscribeOn(Schedulers.boundedElastic());
-	// }
-
 	@GetMapping(value = "/room/{roomId}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
 	public Flux<Message> getChatByRoomId(
 		@PathVariable(value ="roomId") Long roomId
@@ -46,8 +37,9 @@ public class ChatController {
 		return chatService.getChatByRoomId(roomId).subscribeOn(Schedulers.boundedElastic());
 	}
 
-	@PostMapping("")
-	public Mono<Message> sendChat(@RequestBody ChatReqVo vo){
-		return chatService.sendChat(modelMapper.map(vo, ChatReqDto.class));
+	@PostMapping
+	public Mono<Message> sendChat(@RequestBody ChatReqVo vo,
+			@RequestHeader(value = "UUID", defaultValue = "") String uuid){
+		return chatService.sendChat(modelMapper.map(vo, ChatReqDto.class),uuid);
 	}
 }
