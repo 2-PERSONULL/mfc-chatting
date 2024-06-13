@@ -11,5 +11,5 @@ public interface ChatService {
 
 	Flux<Message> getChatByRoomId(Long roomId);
 
-	Mono<Message> sendChat(ChatReqDto dto);
+	Mono<Message> sendChat(ChatReqDto dto, String uuid);
 }

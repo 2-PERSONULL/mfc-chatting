@@ -1,6 +1,6 @@
 package com.mfc.chatting.chat.domain;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -14,17 +14,17 @@ public class Message {
 	@Id
 	private String id;
 	private Long roomId;
-	private String msg;
+	private String type;
+	private Object msg;
 	private String sender;
-	// private String receiver;		// 카카오톡 답글, 멘션 같은 부분에 사용될 수 있음
-	private LocalDateTime createdAt;
+	private Instant createdAt;
 
 	@Builder
-	public Message(String msg, String sender, Long roomId) {
+	public Message(Object msg,String type, String sender, Long roomId) {
 		this.msg = msg;
+		this.type = type;
 		this.sender = sender;
-		// this.receiver = receiver;
 		this.roomId = roomId;
-		this.createdAt = LocalDateTime.now();
+		this.createdAt = Instant.now();
 	}
 }
