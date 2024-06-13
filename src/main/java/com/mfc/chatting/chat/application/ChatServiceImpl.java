@@ -45,8 +45,6 @@ public class ChatServiceImpl implements ChatService{
 		return chatRepository.save(Message.builder()
 			.type(type)
 			.msg(card == null ? msg : card)
-			// .card(type.equals("card") ? (Card)dto.getMsg() : null)
-			// .image(type.equals("image") ? (String)dto.getMsg() : null)
 			.sender(uuid)
 			.roomId(dto.getRoomId())
 			.build());
