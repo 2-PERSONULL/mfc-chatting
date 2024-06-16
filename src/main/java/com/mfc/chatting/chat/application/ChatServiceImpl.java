@@ -1,5 +1,8 @@
 package com.mfc.chatting.chat.application;
 
+import java.time.Instant;
+
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,7 +29,7 @@ public class ChatServiceImpl implements ChatService{
 	}
 
 	@Override
-	public Flux<Message> getChatByRoomId(Long roomId) {
+	public Flux<Message> getChatByStream(Long roomId) {
 		return chatRepository.findChatByRoomId(roomId);
 	}
 
@@ -48,5 +51,10 @@ public class ChatServiceImpl implements ChatService{
 			.sender(uuid)
 			.roomId(dto.getRoomId())
 			.build());
+	}
+
+	@Override
+	public Flux<Message> getChatByPage(Long roomId, Instant createdAt, Pageable page) {
+		return chatRepository.findByRoomIdAndCreatedAtBefore(roomId, createdAt, page);
 	}
 }
