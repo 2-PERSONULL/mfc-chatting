@@ -12,7 +12,7 @@ import com.mfc.chatting.chat.domain.Message;
 
 import reactor.core.publisher.Flux;
 
-public interface ChatRepository extends ReactiveMongoRepository<Message, Long> {
+public interface ChatRepository extends ReactiveMongoRepository<Message, String> {
 
 	@Tailable
 	@Query("{ sender : ?0, receiver : ?1}")
