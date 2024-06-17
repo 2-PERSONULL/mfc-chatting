@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 public class ChatReqVo {
-	private Long roomId;
+	private String roomId;
 	private String type;
 	private Object msg;
 }

@@ -39,14 +39,14 @@ public class ChatController {
 	@GetMapping(value = "/stream/{roomId}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
 	@Operation(summary = "실시간 채팅 조회 API", description = "채팅방 번호에 따른 채팅 목록 조회 (동작 안함 ㅎㅎ..)")
 	public Flux<Message> getChatByStream(
-			@PathVariable(value ="roomId") Long roomId){
+			@PathVariable(value ="roomId") String roomId){
 		return chatService.getChatByStream(roomId).subscribeOn(Schedulers.boundedElastic());
 	}
 
 	@GetMapping("/page/{roomId}")
 	@Operation(summary = "페이징 채팅 조회 API", description = "채팅방 번호에 따른 채팅 목록 조회 (동작 안함 ㅎㅎ..)")
 	public Flux<Message> getChatByPage(
-			@PathVariable Long roomId,
+			@PathVariable String roomId,
 			@PageableDefault(size = 3, sort = "createdAt", direction = Sort.Direction.DESC) Pageable page,
 			@RequestParam(required = false) Instant createdAt) {
 		return chatService.getChatByPage(roomId, createdAt, page);

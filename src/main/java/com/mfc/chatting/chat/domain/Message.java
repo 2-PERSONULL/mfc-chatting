@@ -13,14 +13,14 @@ import lombok.Getter;
 public class Message {
 	@Id
 	private String id;
-	private Long roomId;
+	private String roomId;
 	private String type;
 	private Object msg;
 	private String sender;
 	private Instant createdAt;
 
 	@Builder
-	public Message(Object msg,String type, String sender, Long roomId) {
+	public Message(Object msg,String type, String sender, String roomId) {
 		this.msg = msg;
 		this.type = type;
 		this.sender = sender;

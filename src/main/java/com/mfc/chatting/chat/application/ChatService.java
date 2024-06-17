@@ -13,8 +13,8 @@ import reactor.core.publisher.Mono;
 public interface ChatService {
 	Flux<Message> getChat(String sender, String receiver);
 
-	Flux<Message> getChatByStream(Long roomId);
-	Flux<Message> getChatByPage(Long roomId, Instant createdAt, Pageable page);
+	Flux<Message> getChatByStream(String roomId);
+	Flux<Message> getChatByPage(String roomId, Instant createdAt, Pageable page);
 
 	Mono<Message> sendChat(ChatReqDto dto, String uuid);
 }

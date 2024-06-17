@@ -19,10 +19,10 @@ public interface ChatRepository extends ReactiveMongoRepository<Message, String>
 	Flux<Message> findChatBySenderAndReceiver(String sender, String receiver);
 	@Tailable
 	@Query("{ 'roomId' : ?0}")
-	Flux<Message> findChatByRoomId(Long roomId);
+	Flux<Message> findChatByRoomId(String roomId);
 
-	@Query("{'roomId' :  ?0, 'createdAt':  {$lte:  ?1}}")
-	Flux<Message> findByRoomIdAndCreatedAtBefore(Long roomId, Instant createdAt, Pageable page);
+	@Query("{'roomId' :  ?0}")
+	Flux<Message> findByRoomIdAndCreatedAtBefore(String roomId, Instant createdAt, Pageable page);
 
 	// @Tailable
 	// Flux<Chat> msgFindBySender(String sender, String receiver);

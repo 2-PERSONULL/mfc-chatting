@@ -29,7 +29,7 @@ public class ChatServiceImpl implements ChatService{
 	}
 
 	@Override
-	public Flux<Message> getChatByStream(Long roomId) {
+	public Flux<Message> getChatByStream(String roomId) {
 		return chatRepository.findChatByRoomId(roomId);
 	}
 
@@ -54,7 +54,7 @@ public class ChatServiceImpl implements ChatService{
 	}
 
 	@Override
-	public Flux<Message> getChatByPage(Long roomId, Instant createdAt, Pageable page) {
+	public Flux<Message> getChatByPage(String roomId, Instant createdAt, Pageable page) {
 		return chatRepository.findByRoomIdAndCreatedAtBefore(roomId, createdAt, page);
 	}
 }
