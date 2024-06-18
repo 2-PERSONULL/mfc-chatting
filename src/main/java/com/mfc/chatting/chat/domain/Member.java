@@ -10,4 +10,11 @@ public class Member {
 	private int unreadCount;
 	private Instant enterTime;
 	private Instant exitTime;
+
+	public Member(String memberId) {
+		this.memberId = memberId;
+		this.unreadCount = 0;
+		this.enterTime = Instant.now();
+		this.exitTime = Instant.now();
+	}
 }

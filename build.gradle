@@ -43,6 +43,10 @@ dependencies {
 
 	// swagger
 	implementation 'org.springdoc:springdoc-openapi-starter-webflux-ui:2.0.4'
+
+	// kafka
+	implementation 'org.springframework.kafka:spring-kafka'
+	implementation 'org.springframework.kafka:spring-kafka-test'
 }
 
 tasks.named('bootBuildImage') {
