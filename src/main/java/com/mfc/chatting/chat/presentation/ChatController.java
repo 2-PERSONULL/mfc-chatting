@@ -31,7 +31,7 @@ import reactor.core.scheduler.Schedulers;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/chat")
-@Tag(name = "chat", description = "채팅 서비스 컨트롤러")
+@Tag(name = "chat", description = "채팅 메세지 서비스 컨트롤러")
 public class ChatController {
 	private final ChatService chatService;
 	private final ModelMapper modelMapper;
@@ -44,7 +44,7 @@ public class ChatController {
 	}
 
 	@GetMapping("/page/{roomId}")
-	@Operation(summary = "페이징 채팅 조회 API", description = "채팅방 번호에 따른 채팅 목록 조회 (동작 안함 ㅎㅎ..)")
+	@Operation(summary = "페이징 채팅 조회 API", description = "채팅방 번호에 따른 채팅 목록 조회")
 	public Flux<Message> getChatByPage(
 			@PathVariable String roomId,
 			@PageableDefault(size = 3, sort = "createdAt", direction = Sort.Direction.DESC) Pageable page,
