@@ -4,6 +4,7 @@ import static com.mfc.chatting.common.response.BaseResponseStatus.*;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -33,13 +34,20 @@ public class ChatServiceImpl implements ChatService{
 	private final ChatRoomRepository chatRoomRepository;
 
 	@Override
-	public Flux<Message> getChat(String sender, String receiver) {
-		return chatRepository.findChatBySenderAndReceiver(sender, receiver);
+	public Flux<Message> getChatByStream(String roomId, String uuid) {
+		ChatRoom chatRoom = chatRoomRepository.findByIdAndMemberId(roomId, uuid)
+				.orElseThrow(() -> new BaseException(CHATROOM_NOT_FOUND));
+
+		return chatRepository.findChatByRoomId(roomId, findExitTimeByUuid(chatRoom.getMembers(), uuid));
 	}
 
 	@Override
-	public Flux<Message> getChatByStream(String roomId) {
-		return chatRepository.findChatByRoomId(roomId);
+	public Flux<Message> getChatByPage(String roomId, String uuid, Pageable page) {
+		ChatRoom chatRoom = chatRoomRepository.findByIdAndMemberId(roomId, uuid)
+				.orElseThrow(() -> new BaseException(CHATROOM_NOT_FOUND));
+
+		return chatRepository.findByRoomIdAndCreatedAtBefore(
+				roomId, findExitTimeByUuid(chatRoom.getMembers(), uuid), page);
 	}
 
 	@Override
@@ -86,8 +94,11 @@ public class ChatServiceImpl implements ChatService{
 			.build());
 	}
 
-	@Override
-	public Flux<Message> getChatByPage(String roomId, Instant createdAt, Pageable page) {
-		return chatRepository.findByRoomIdAndCreatedAtBefore(roomId, createdAt, page);
+	private Instant findExitTimeByUuid(List<Member> members, String uuid) {
+		return members.stream()
+				.filter(m -> m.getMemberId().equals(uuid))
+				.findFirst()
+				.orElseThrow(() -> new BaseException(INVALID_EXIT))
+				.getExitTime();
 	}
 }
