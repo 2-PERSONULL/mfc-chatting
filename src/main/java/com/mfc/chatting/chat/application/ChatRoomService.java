@@ -9,4 +9,6 @@ import reactor.core.publisher.Mono;
 public interface ChatRoomService {
 	void createChatRoom(ChatRoomVo chatRoomVo);
 	ChatRoomRespDto getRoomDetail(String requestId, String partnerId, String loginId);
+	void enterChatRoom(String roomId, String uuid);
+	void exitChatRoom(String roomId, String uuid);
 }

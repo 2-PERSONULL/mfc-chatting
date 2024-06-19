@@ -13,17 +13,10 @@ import com.mfc.chatting.chat.domain.Message;
 import reactor.core.publisher.Flux;
 
 public interface ChatRepository extends ReactiveMongoRepository<Message, String> {
-
 	@Tailable
-	@Query("{ sender : ?0, receiver : ?1}")
-	Flux<Message> findChatBySenderAndReceiver(String sender, String receiver);
-	@Tailable
-	@Query("{ 'roomId' : ?0}")
-	Flux<Message> findChatByRoomId(String roomId);
+	@Query("{ 'roomId' : ?0, 'createdAt': { $gt: ?1 }}")
+	Flux<Message> findChatByRoomId(String roomId, Instant createdAt);
 
-	@Query("{'roomId' :  ?0}")
-	Flux<Message> findByRoomIdAndCreatedAtBefore(String roomId, Instant createdAt, Pageable page);
-
-	// @Tailable
-	// Flux<Chat> msgFindBySender(String sender, String receiver);
+	@Query("{ 'roomId' : ?0, 'createdAt': { $lte: ?1 } }")
+	Flux<Message> findByRoomIdAndCreatedAtBefore(String roomId, Instant createdAt,Pageable page);
 }
