@@ -8,6 +8,7 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mfc.chatting.chat.domain.Card;
@@ -34,11 +35,17 @@ public class ChatServiceImpl implements ChatService{
 	private final ChatRoomRepository chatRoomRepository;
 
 	@Override
-	public Flux<Message> getChatByStream(String roomId, String uuid) {
+	public Flux<Message> getChatByStream(String roomId, String uuid, String msgId) {
 		ChatRoom chatRoom = chatRoomRepository.findByIdAndMemberId(roomId, uuid)
 				.orElseThrow(() -> new BaseException(CHATROOM_NOT_FOUND));
 
-		return chatRepository.findChatByRoomId(roomId, findExitTimeByUuid(chatRoom.getMembers(), uuid));
+		if(StringUtils.hasText(msgId)) {
+			return chatRepository.findByRoomIdAndId(roomId, msgId)
+					.switchIfEmpty(Mono.error(new BaseException(CHAT_NOT_FOUND)))
+					.flatMapMany(chat -> chatRepository.findChatByRoomId(roomId, chat.getCreatedAt()));
+		} else {
+			return chatRepository.findChatByRoomId(roomId, findExitTimeByUuid(chatRoom.getMembers(), uuid));
+		}
 	}
 
 	@Override

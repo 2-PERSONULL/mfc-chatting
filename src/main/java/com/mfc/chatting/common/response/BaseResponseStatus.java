@@ -15,7 +15,8 @@ public enum BaseResponseStatus {
 	 **/
 	SUCCESS(HttpStatus.OK, true, 200, "요청에 성공했습니다."),
 	CHATROOM_NOT_FOUND(HttpStatus.NOT_FOUND, false, 404, "존재하지 않는 채팅방입니다."),
-	INVALID_EXIT(HttpStatus.BAD_REQUEST, false, 400, "잘못된 접근입니다.");
+	INVALID_EXIT(HttpStatus.BAD_REQUEST, false, 400, "잘못된 접근입니다."),
+	CHAT_NOT_FOUND(HttpStatus.NOT_FOUND, false, 404, "존재하지 않는 채팅입니다.");
 
 	private final HttpStatusCode httpStatusCode;
 	private final boolean isSuccess;
