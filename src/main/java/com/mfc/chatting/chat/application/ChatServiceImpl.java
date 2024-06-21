@@ -35,11 +35,11 @@ public class ChatServiceImpl implements ChatService{
 	private final ChatRoomRepository chatRoomRepository;
 
 	@Override
-	public Flux<Message> getChatByStream(String roomId, String uuid) {
+	public Flux<Message> getChatByStream(String roomId, String uuid, Instant now) {
 		ChatRoom chatRoom = chatRoomRepository.findByIdAndMemberId(roomId, uuid)
 				.orElseThrow(() -> new BaseException(CHATROOM_NOT_FOUND));
 
-		return chatRepository.findChatByRoomId(roomId, Instant.now());
+		return chatRepository.findChatByRoomId(roomId, now);
 	}
 
 	@Override
