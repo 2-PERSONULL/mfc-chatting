@@ -2,6 +2,7 @@ package com.mfc.chatting.chat.application;
 
 import static com.mfc.chatting.common.response.BaseResponseStatus.*;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 @Service
 @Slf4j
@@ -39,7 +41,9 @@ public class ChatServiceImpl implements ChatService{
 		ChatRoom chatRoom = chatRoomRepository.findByIdAndMemberId(roomId, uuid)
 				.orElseThrow(() -> new BaseException(CHATROOM_NOT_FOUND));
 
-		return chatRepository.findChatByRoomId(roomId, now);
+		return chatRepository.findChatByRoomId(roomId, Instant.now())
+				.repeatWhen(repeat -> repeat.delayElements(Duration.ofSeconds(1)))
+				.subscribeOn(Schedulers.boundedElastic());
 	}
 
 	@Override
