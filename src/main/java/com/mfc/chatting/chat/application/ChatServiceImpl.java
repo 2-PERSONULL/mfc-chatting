@@ -35,17 +35,11 @@ public class ChatServiceImpl implements ChatService{
 	private final ChatRoomRepository chatRoomRepository;
 
 	@Override
-	public Flux<Message> getChatByStream(String roomId, String uuid, String msgId) {
+	public Flux<Message> getChatByStream(String roomId, String uuid) {
 		ChatRoom chatRoom = chatRoomRepository.findByIdAndMemberId(roomId, uuid)
 				.orElseThrow(() -> new BaseException(CHATROOM_NOT_FOUND));
 
-		if(StringUtils.hasText(msgId)) {
-			return chatRepository.findByRoomIdAndId(roomId, msgId)
-					.switchIfEmpty(Mono.error(new BaseException(CHAT_NOT_FOUND)))
-					.flatMapMany(chat -> chatRepository.findChatByRoomId(roomId, chat.getCreatedAt()));
-		} else {
-			return chatRepository.findChatByRoomId(roomId, findExitTimeByUuid(chatRoom.getMembers(), uuid));
-		}
+		return chatRepository.findChatByRoomId(roomId, Instant.now());
 	}
 
 	@Override
@@ -54,7 +48,7 @@ public class ChatServiceImpl implements ChatService{
 				.orElseThrow(() -> new BaseException(CHATROOM_NOT_FOUND));
 
 		return chatRepository.findByRoomIdAndCreatedAtBefore(
-				roomId, findExitTimeByUuid(chatRoom.getMembers(), uuid), page);
+				roomId, findEnterTimeByUuid(chatRoom.getMembers(), uuid), page);
 	}
 
 	@Override
@@ -101,11 +95,11 @@ public class ChatServiceImpl implements ChatService{
 			.build());
 	}
 
-	private Instant findExitTimeByUuid(List<Member> members, String uuid) {
+	private Instant findEnterTimeByUuid(List<Member> members, String uuid) {
 		return members.stream()
 				.filter(m -> m.getMemberId().equals(uuid))
 				.findFirst()
 				.orElseThrow(() -> new BaseException(INVALID_EXIT))
-				.getExitTime();
+				.getEnterTime();
 	}
 }
