@@ -41,8 +41,7 @@ public class ChatController {
 	public Flux<Message> getChatByStream(
 			@PathVariable(value ="roomId") String roomId,
 			@RequestHeader(value = "UUID", defaultValue = "") String uuid){
-		return chatService.getChatByStream(roomId, uuid, Instant.now())
-				.subscribeOn(Schedulers.boundedElastic());
+		return chatService.getChatByStream(roomId, uuid, Instant.now());
 	}
 
 	@GetMapping("/page/{roomId}")
