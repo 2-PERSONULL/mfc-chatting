@@ -42,7 +42,6 @@ public class ChatServiceImpl implements ChatService{
 				.orElseThrow(() -> new BaseException(CHATROOM_NOT_FOUND));
 
 		return chatRepository.findChatByRoomId(roomId, Instant.now())
-				.repeatWhen(repeat -> repeat.delayElements(Duration.ofSeconds(1)))
 				.subscribeOn(Schedulers.boundedElastic());
 	}
 
