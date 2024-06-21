@@ -40,9 +40,8 @@ public class ChatController {
 	@Operation(summary = "실시간 채팅 조회 API", description = "채팅방 번호에 따른 채팅 목록 조회 (동작 안함 ㅎㅎ..)")
 	public Flux<Message> getChatByStream(
 			@PathVariable(value ="roomId") String roomId,
-			@RequestHeader(value = "UUID", defaultValue = "") String uuid,
-			@RequestParam(value = "msgId", required = false) String msgId){
-		return chatService.getChatByStream(roomId, uuid, msgId)
+			@RequestHeader(value = "UUID", defaultValue = "") String uuid){
+		return chatService.getChatByStream(roomId, uuid)
 				.subscribeOn(Schedulers.boundedElastic());
 	}
 

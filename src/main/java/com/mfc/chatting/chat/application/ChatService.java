@@ -11,7 +11,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public interface ChatService {
-	Flux<Message> getChatByStream(String roomId, String uuid, String msgId);
+	Flux<Message> getChatByStream(String roomId, String uuid);
 	Flux<Message> getChatByPage(String roomId, String uuid, Pageable page);
 
 	Mono<Message> sendChat(ChatReqDto dto, String uuid);
