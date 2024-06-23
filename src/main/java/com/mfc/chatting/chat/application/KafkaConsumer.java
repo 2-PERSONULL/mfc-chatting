@@ -8,7 +8,7 @@ import com.mfc.chatting.chat.domain.ChatRoom;
 import com.mfc.chatting.chat.domain.Member;
 import com.mfc.chatting.chat.domain.Message;
 import com.mfc.chatting.chat.dto.kafka.CreateChatRoomDto;
-import com.mfc.chatting.chat.infrastructure.ChatRepository;
+import com.mfc.chatting.chat.infrastructure.ChatReactiveRepository;
 import com.mfc.chatting.chat.infrastructure.ChatRoomRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 public class KafkaConsumer {
 	private final ChatRoomRepository chatRoomRepository;
-	private final ChatRepository chatRepository;
+	private final ChatReactiveRepository chatReactiveRepository;
 
 	@KafkaListener(topics = "create-chatroom", containerFactory = "createChatRoomListener")
 	public void createChatRoom(CreateChatRoomDto dto) {
@@ -29,7 +29,7 @@ public class KafkaConsumer {
 						.toList())
 				.build());
 
-		chatRepository.save(Message.builder()
+		chatReactiveRepository.save(Message.builder()
 				.type("system")
 				.msg("Chat Room Open")
 				.sender("system")
