@@ -10,13 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mfc.chatting.chat.domain.ChatRoom;
 import com.mfc.chatting.chat.domain.Member;
-import com.mfc.chatting.chat.domain.Message;
 import com.mfc.chatting.chat.dto.resp.ChatRoomRespDto;
-import com.mfc.chatting.chat.infrastructure.ChatRepository;
 import com.mfc.chatting.chat.infrastructure.ChatRoomRepository;
 import com.mfc.chatting.chat.vo.req.ChatRoomVo;
 import com.mfc.chatting.common.exception.BaseException;
-import com.mfc.chatting.common.response.BaseResponseStatus;
 
 import lombok.RequiredArgsConstructor;
 

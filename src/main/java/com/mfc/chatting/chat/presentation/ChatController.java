@@ -2,6 +2,7 @@ package com.mfc.chatting.chat.presentation;
 
 import java.time.Instant;
 
+import org.apache.kafka.streams.kstream.internals.graph.BaseRepartitionNode;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -20,6 +21,9 @@ import com.mfc.chatting.chat.application.ChatService;
 import com.mfc.chatting.chat.domain.Message;
 import com.mfc.chatting.chat.dto.req.ChatReqDto;
 import com.mfc.chatting.chat.vo.req.ChatReqVo;
+import com.mfc.chatting.chat.vo.resp.ChatPageRespVo;
+import com.mfc.chatting.common.response.BaseResponse;
+import com.mfc.chatting.common.response.BaseResponseStatus;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -46,11 +50,12 @@ public class ChatController {
 
 	@GetMapping("/page/{roomId}")
 	@Operation(summary = "페이징 채팅 조회 API", description = "채팅방 번호에 따른 채팅 목록 조회")
-	public Flux<Message> getChatByPage(
+	public BaseResponse<ChatPageRespVo> getChatByPage(
 			@PathVariable String roomId,
 			@RequestHeader(value = "UUID", defaultValue = "") String uuid,
 			@PageableDefault(size = 3, sort = "createdAt", direction = Sort.Direction.DESC) Pageable page) {
-		return chatService.getChatByPage(roomId, uuid, page);
+		return new BaseResponse<>(modelMapper.map(
+				chatService.getChatByPage(roomId, uuid, page), ChatPageRespVo.class));
 	}
 
 	@PostMapping
